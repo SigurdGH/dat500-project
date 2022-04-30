@@ -19,9 +19,14 @@ spark.catalog.clearCache()
 # Read the data
 file = "file:///home/ubuntu/project/articles_10000.csv"
 df = spark.read.csv(file, header=False, sep="|", multiLine=True, escape="\"")
+# To read the larger datafile
+#file = "file:///home/ubuntu/project/data.csv"
+#df = spark.read.csv(file, header=True, sep=",", multiLine=True, escape="\"")
 
 # Bring the data to the driver
 articles = df.select("_c2").rdd.map(lambda row: row._c2).collect()
+# Use this when reading the big one
+# articles = df.select("Content").rdd.map(lambda row: row.Content).collect()
 
 # Clean up the article and create shingles
 def nGrams(data):
